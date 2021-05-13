@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_app_for_simbersoft" default="compile.module.app_for_simbersoft">
+    <dirname property="module.app_for_simbersoft.basedir" file="${ant.file.module_app_for_simbersoft}"/>
+
+    <property name="module.jdk.home.app_for_simbersoft" value="${project.jdk.home}"/>
+    <property name="module.jdk.bin.app_for_simbersoft" value="${project.jdk.bin}"/>
+    <property name="module.jdk.classpath.app_for_simbersoft" value="${project.jdk.classpath}"/>
+
+    <property name="compiler.args.app_for_simbersoft" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+
+    <property name="app_for_simbersoft.output.dir"
+              value="${module.app_for_simbersoft.basedir}/out/production/App_for_SimberSoft"/>
+    <property name="app_for_simbersoft.testoutput.dir"
+              value="${module.app_for_simbersoft.basedir}/out/test/App_for_SimberSoft"/>
+
+    <path id="app_for_simbersoft.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="app_for_simbersoft.module.production.classpath">
+        <path refid="${module.jdk.classpath.app_for_simbersoft}"/>
+    </path>
+
+    <path id="app_for_simbersoft.runtime.production.module.classpath">
+        <pathelement location="${app_for_simbersoft.output.dir}"/>
+    </path>
+
+    <path id="app_for_simbersoft.module.classpath">
+        <path refid="${module.jdk.classpath.app_for_simbersoft}"/>
+        <pathelement location="${app_for_simbersoft.output.dir}"/>
+    </path>
+
+    <path id="app_for_simbersoft.runtime.module.classpath">
+        <pathelement location="${app_for_simbersoft.testoutput.dir}"/>
+        <pathelement location="${app_for_simbersoft.output.dir}"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.app_for_simbersoft">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.app_for_simbersoft">
+        <patternset refid="excluded.from.module.app_for_simbersoft"/>
+    </patternset>
+
+    <path id="app_for_simbersoft.module.sourcepath">
+        <dirset dir="${module.app_for_simbersoft.basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.app_for_simbersoft"
+            depends="compile.module.app_for_simbersoft.production,compile.module.app_for_simbersoft.tests"
+            description="Compile module App_for_SimberSoft"/>
+
+    <target name="compile.module.app_for_simbersoft.production" depends="register.custom.compilers"
+            description="Compile module App_for_SimberSoft; production classes">
+        <mkdir dir="${app_for_simbersoft.output.dir}"/>
+        <javac2 destdir="${app_for_simbersoft.output.dir}" debug="${compiler.debug}"
+                nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true"
+                executable="${module.jdk.bin.app_for_simbersoft}/javac">
+            <compilerarg line="${compiler.args.app_for_simbersoft}"/>
+            <bootclasspath refid="app_for_simbersoft.module.bootclasspath"/>
+            <classpath refid="app_for_simbersoft.module.production.classpath"/>
+            <src refid="app_for_simbersoft.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.app_for_simbersoft"/>
+        </javac2>
+
+        <copy todir="${app_for_simbersoft.output.dir}">
+            <fileset dir="${module.app_for_simbersoft.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.app_for_simbersoft.tests"
+            depends="register.custom.compilers,compile.module.app_for_simbersoft.production"
+            description="compile module App_for_SimberSoft; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.app_for_simbersoft" description="cleanup module">
+        <delete dir="${app_for_simbersoft.output.dir}"/>
+        <delete dir="${app_for_simbersoft.testoutput.dir}"/>
+    </target>
+</project>

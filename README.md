@@ -1,7 +1,7 @@
 # Application_For_SimbirSoft
 Test task for passing the selection 
 
-## link 
+## Link 
 [SimbirSoft](https://www.simbirsoft.com) - software development company
 
 
